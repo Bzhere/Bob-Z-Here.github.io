@@ -23,12 +23,12 @@ function coverImage(ctx, image, x, y, width, height) {
   ctx.drawImage(image, drawX, drawY, drawWidth, drawHeight);
 }
 
-function containImage(ctx, image, x, y, width, height) {
-  const scale = Math.min(width / image.width, height / image.height);
+function coverImageWithFocus(ctx, image, x, y, width, height, focusX = 0.5, focusY = 0.3) {
+  const scale = Math.max(width / image.width, height / image.height);
   const drawWidth = image.width * scale;
   const drawHeight = image.height * scale;
-  const drawX = x + (width - drawWidth) / 2;
-  const drawY = y + (height - drawHeight) / 2;
+  const drawX = x + width / 2 - drawWidth * focusX;
+  const drawY = y + height / 2 - drawHeight * focusY;
   ctx.drawImage(image, drawX, drawY, drawWidth, drawHeight);
 }
 
@@ -57,7 +57,7 @@ async function makeFrontTexture() {
   ctx.fillStyle = "#171615";
   ctx.fill();
   ctx.clip();
-  containImage(ctx, image, 90, 88, 640, 488);
+  coverImageWithFocus(ctx, image, 64, 72, 692, 520, 0.5, 0.3);
   ctx.restore();
 
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
