@@ -1,14 +1,24 @@
-# Z·GY Personal Portrait Page
+# ZGY Personal Portrait Page
 
-This is a static single-page portrait website for Z·GY. It can be opened directly in a browser or hosted with any static site service.
+This is a Vite-powered single-page portrait website for ZGY. The page keeps the original portrait gallery and adds a React Bits lanyard badge built with Three.js and Rapier physics.
 
 ## Local Preview
 
 ```powershell
-python -m http.server 4173 --bind 127.0.0.1
+npm install
+npm run dev -- --port 4173
 ```
 
 Then open `http://127.0.0.1:4173/index.html`.
+
+## Production Build
+
+```powershell
+npm run build
+npm run preview -- --port 4174
+```
+
+The production HTML is generated in `dist/index.html`.
 
 ## Image Structure
 
@@ -18,7 +28,7 @@ Then open `http://127.0.0.1:4173/index.html`.
 
 ## Page Structure
 
-- `hero`: main Z·GY identity section.
+- `hero`: main ZGY identity section.
 - `denim`: cool gray denim portraits.
 - `crimson`: red studio and black suit portraits.
 - `vintage`: vintage interior and western leather portraits.
@@ -26,6 +36,7 @@ Then open `http://127.0.0.1:4173/index.html`.
 
 ## Interaction Details
 
+- The upper-right lanyard badge uses the React Bits Lanyard component with real WebGL physics and drag interaction.
 - The navigation bar subtly tightens after scrolling.
 - Portrait cards use bottom-aligned full-image display, so the subject is not cropped.
 - Portrait cards include soft reveal, hover sheen, and pointer-based tilt effects.
@@ -33,10 +44,4 @@ Then open `http://127.0.0.1:4173/index.html`.
 
 ## GitHub Pages Deployment
 
-1. Create a GitHub repository named `<your-username>.github.io` for a user site, or any repository name for a project site.
-2. Upload `index.html`, `README.md`, and the `assets/` directory to the repository root.
-3. If this is a project site, go to repository `Settings` -> `Pages`, choose `Deploy from a branch`, select the `main` branch and `/root`, then save.
-4. If this is a user site named `<your-username>.github.io`, GitHub Pages will publish from the default branch root.
-5. Wait for the Pages build to finish, then open `https://<your-username>.github.io/` for a user site or `https://<your-username>.github.io/<repo-name>/` for a project site.
-
-Keep `index.html` in the repository root so GitHub Pages can use it as the homepage.
+Build with `npm run build` and deploy the generated `dist/` directory with your GitHub Pages workflow or Pages deployment tool.
