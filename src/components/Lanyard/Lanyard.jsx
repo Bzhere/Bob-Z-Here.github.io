@@ -269,6 +269,10 @@ function Band({
               drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())))
             )}
           >
+            <mesh name="mobile-card-hit-area">
+              <boxGeometry args={[2.4, 3.3, 0.16]} />
+              <meshBasicMaterial transparent opacity={0.01} depthWrite={false} />
+            </mesh>
             <mesh geometry={nodes.card.geometry}>
               <meshPhysicalMaterial
                 map={cardMap}

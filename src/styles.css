@@ -6,6 +6,7 @@
   width: min(540px, 48vw);
   height: 600px;
   pointer-events: none;
+  touch-action: none;
 }
 
 #reactbits-lanyard-root:has(.reactbits-lanyard-shell.is-hidden) {
@@ -48,6 +49,7 @@
 .reactbits-lanyard-shell canvas {
   width: 100% !important;
   height: 100% !important;
+  touch-action: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -59,26 +61,26 @@
 @media (max-width: 860px) {
   #reactbits-lanyard-root {
     top: 76px;
-    right: -48px;
-    width: 340px;
-    height: 420px;
+    right: -24px;
+    width: min(78vw, 420px);
+    height: 500px;
   }
 
   .reactbits-lanyard-shell .lanyard-wrapper {
-    transform: scale(0.82);
+    transform: scale(0.9);
     transform-origin: top right;
   }
 }
 
 @media (max-width: 560px) {
   #reactbits-lanyard-root {
-    top: 70px;
-    right: -64px;
-    width: 310px;
-    height: 390px;
+    top: 72px;
+    right: -18px;
+    width: min(82vw, 360px);
+    height: 450px;
   }
 
   .reactbits-lanyard-shell .lanyard-wrapper {
-    transform: scale(0.74);
+    transform: scale(0.86);
   }
 }
