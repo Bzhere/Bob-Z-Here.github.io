@@ -27,7 +27,16 @@ const BLANK_PIXEL =
 const FRONT_UV_RECT = { x: 0, y: 0, w: 0.5, h: 0.755 };
 const BACK_UV_RECT = { x: 0.5, y: 0, w: 0.5, h: 0.757 };
 
-const isFiniteVector = value => Number.isFinite(value?.x) && Number.isFinite(value?.y) && Number.isFinite(value?.z);
+const PHYSICS_BOUND = 20;
+const isSafeVector = value =>
+  Number.isFinite(value?.x) &&
+  Number.isFinite(value?.y) &&
+  Number.isFinite(value?.z) &&
+  Math.abs(value.x) < PHYSICS_BOUND &&
+  Math.abs(value.y) < PHYSICS_BOUND &&
+  Math.abs(value.z) < PHYSICS_BOUND;
+
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 export default function Lanyard({
   position = [0, 0, 30],
@@ -203,13 +212,22 @@ function Band({
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
       [card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp());
-      const nextTranslation = { x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z };
-      if (isFiniteVector(nextTranslation)) card.current?.setNextKinematicTranslation(nextTranslation);
+      const nextTranslation = {
+        x: clamp(vec.x - dragged.x, -5, 5),
+        y: clamp(vec.y - dragged.y, -7, 7),
+        z: clamp(vec.z - dragged.z, -3, 3)
+      };
+      if (isSafeVector(nextTranslation)) card.current?.setNextKinematicTranslation(nextTranslation);
     }
     if (fixed.current) {
+      let hasUnsafeSegment = false;
       [j1, j2].forEach(ref => {
         const translation = ref.current.translation();
-        if (!isFiniteVector(translation)) return;
+        if (!isSafeVector(translation)) {
+          ref.current.lerped = null;
+          hasUnsafeSegment = true;
+          return;
+        }
         if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(translation);
         const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(translation)));
         ref.current.lerped.lerp(
@@ -217,9 +235,10 @@ function Band({
           delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
         );
       });
+      if (hasUnsafeSegment) return;
       const j3Translation = j3.current.translation();
       const fixedTranslation = fixed.current.translation();
-      if (!isFiniteVector(j3Translation) || !isFiniteVector(j2.current.lerped) || !isFiniteVector(j1.current.lerped) || !isFiniteVector(fixedTranslation)) return;
+      if (!isSafeVector(j3Translation) || !isSafeVector(j2.current.lerped) || !isSafeVector(j1.current.lerped) || !isSafeVector(fixedTranslation)) return;
       curve.points[0].copy(j3Translation);
       curve.points[1].copy(j2.current.lerped);
       curve.points[2].copy(j1.current.lerped);
