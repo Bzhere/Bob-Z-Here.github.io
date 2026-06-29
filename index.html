@@ -538,6 +538,7 @@
 
       .finale {
         position: relative;
+        z-index: 50;
         width: min(1160px, calc(100% - 36px));
         margin: 0 auto;
         padding: 60px 0 92px;
@@ -1083,8 +1084,8 @@
             </div>
             <div class="contact-panel" aria-label="Contact links">
               <p>Stay low-key. Stay precise. Let the frame remember.</p>
-              <a href="mailto:mason-zgy@qq.com">mason-zgy@qq.com <span>�?/span></a>
-              <a href="#top">Back to Top <span>�?/span></a>
+              <a href="mailto:mason-zgy@qq.com">mason-zgy@qq.com <span aria-hidden="true">&rarr;</span></a>
+              <a href="/" data-back-home>Back to Top <span aria-hidden="true">&uarr;</span></a>
             </div>
           </div>
         </section>
@@ -1213,6 +1214,14 @@
       const easterModal = document.getElementById("easterModal");
       const closeEasterModal = document.getElementById("closeEasterModal");
       const metalCursor = document.querySelector(".metal-cursor");
+      const backHomeLink = document.querySelector("[data-back-home]");
+
+      if (backHomeLink) {
+        backHomeLink.addEventListener("click", (event) => {
+          event.preventDefault();
+          window.location.assign(backHomeLink.href);
+        });
+      }
 
       if (metalCursor && window.matchMedia("(pointer: fine)").matches) {
         window.addEventListener(
