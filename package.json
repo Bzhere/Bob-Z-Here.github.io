@@ -4,6 +4,7 @@
   "description": "A personal portrait homepage for ZGY with a React Bits lanyard badge.",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "test": "node --test",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1"
   },
