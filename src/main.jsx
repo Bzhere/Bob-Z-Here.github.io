@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import Lanyard from "./components/Lanyard/Lanyard";
-import portraitUrl from "../assets/hero-denim.webp";
+import portraitUrl from "../assets/crimson-02.webp";
 import "./styles.css";
 
 function loadImage(src) {
@@ -16,6 +16,15 @@ function loadImage(src) {
 
 function coverImage(ctx, image, x, y, width, height) {
   const scale = Math.max(width / image.width, height / image.height);
+  const drawWidth = image.width * scale;
+  const drawHeight = image.height * scale;
+  const drawX = x + (width - drawWidth) / 2;
+  const drawY = y + (height - drawHeight) / 2;
+  ctx.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+}
+
+function containImage(ctx, image, x, y, width, height) {
+  const scale = Math.min(width / image.width, height / image.height);
   const drawWidth = image.width * scale;
   const drawHeight = image.height * scale;
   const drawX = x + (width - drawWidth) / 2;
@@ -45,8 +54,10 @@ async function makeFrontTexture() {
 
   ctx.save();
   roundRect(ctx, 64, 72, 692, 520, 46);
+  ctx.fillStyle = "#171615";
+  ctx.fill();
   ctx.clip();
-  coverImage(ctx, image, 64, 72, 692, 520);
+  containImage(ctx, image, 90, 88, 640, 488);
   ctx.restore();
 
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -121,6 +132,7 @@ function makeBackTexture() {
 
 function ReactBitsLanyardBadge() {
   const [textures, setTextures] = useState(null);
+  const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -134,10 +146,33 @@ function ReactBitsLanyardBadge() {
     };
   }, []);
 
+  useEffect(() => {
+    const denimSection = document.getElementById("denim");
+    if (!denimSection) return undefined;
+
+    const updateVisibility = () => {
+      const navOffset = 96;
+      setIsHidden(denimSection.getBoundingClientRect().top <= navOffset);
+    };
+
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    window.addEventListener("resize", updateVisibility);
+
+    return () => {
+      window.removeEventListener("scroll", updateVisibility);
+      window.removeEventListener("resize", updateVisibility);
+    };
+  }, []);
+
   if (!textures) return null;
 
   return (
-    <div className="reactbits-lanyard-shell" aria-label="Interactive React Bits lanyard badge">
+    <div
+      className={`reactbits-lanyard-shell${isHidden ? " is-hidden" : ""}`}
+      aria-label="Interactive React Bits lanyard badge"
+      aria-hidden={isHidden}
+    >
       <Lanyard
         position={[0, 0, 18]}
         gravity={[0, -40, 0]}
