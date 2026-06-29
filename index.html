@@ -714,56 +714,33 @@
         cursor: none;
       }
 
-      .metal-cursor {
+      .cat-cursor {
         position: fixed;
         top: 0;
         left: 0;
         z-index: 9999;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background:
-          radial-gradient(circle at 32% 28%, #ffffff 0 9%, #d7dce0 10% 22%, #8f989f 36%, #f5f7f8 54%, #6d747a 72%, #f8fafb 100%);
-        box-shadow:
-          inset -6px -7px 14px rgba(38, 42, 46, 0.38),
-          inset 5px 5px 12px rgba(255, 255, 255, 0.82),
-          0 8px 22px rgba(24, 24, 24, 0.24);
+        width: 58px;
+        height: 58px;
+        background-image: url("assets/cat-cursor.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        filter: drop-shadow(0 7px 16px rgba(17, 16, 15, 0.34));
         opacity: 0;
         pointer-events: none;
-        transform: translate3d(-50%, -50%, 0) scale(0.82);
+        transform: translate3d(-18px, -18px, 0) scale(0.86);
         transition:
           opacity 180ms var(--ease),
           transform 180ms var(--ease);
         mix-blend-mode: normal;
       }
 
-      .metal-cursor::before {
-        position: absolute;
-        inset: 7px;
-        border-radius: inherit;
-        border: 1px solid rgba(255, 255, 255, 0.72);
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(142, 151, 158, 0.18));
-        content: "";
-      }
-
-      .metal-cursor::after {
-        position: absolute;
-        top: 5px;
-        left: 8px;
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.92);
-        filter: blur(0.3px);
-        content: "";
-      }
-
-      .metal-cursor.visible {
+      .cat-cursor.visible {
         opacity: 1;
       }
 
-      .metal-cursor.active {
-        transform: translate3d(-50%, -50%, 0) scale(1.28);
+      .cat-cursor.active {
+        transform: translate3d(-18px, -18px, 0) scale(1.08) rotate(-4deg);
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -790,7 +767,7 @@
           cursor: auto;
         }
 
-        .metal-cursor {
+        .cat-cursor {
           display: none;
         }
       }
@@ -916,7 +893,7 @@
     </style>
   </head>
   <body>
-    <div class="metal-cursor" aria-hidden="true"></div>
+    <div class="cat-cursor" aria-hidden="true"></div>
     <div class="site-shell">
       <nav class="nav" aria-label="Main navigation">
         <a class="brand" href="#top" aria-label="Back to top">
@@ -1217,7 +1194,7 @@
       const loveTrigger = document.querySelector("[data-love-trigger]");
       const easterModal = document.getElementById("easterModal");
       const closeEasterModal = document.getElementById("closeEasterModal");
-      const metalCursor = document.querySelector(".metal-cursor");
+      const catCursor = document.querySelector(".cat-cursor");
       const backHomeLink = document.querySelector("[data-back-home]");
 
       if (backHomeLink) {
@@ -1227,20 +1204,20 @@
         });
       }
 
-      if (metalCursor && window.matchMedia("(pointer: fine)").matches) {
+      if (catCursor && window.matchMedia("(pointer: fine)").matches) {
         window.addEventListener(
           "pointermove",
           (event) => {
-            metalCursor.classList.add("visible");
-            metalCursor.style.left = `${event.clientX}px`;
-            metalCursor.style.top = `${event.clientY}px`;
+            catCursor.classList.add("visible");
+            catCursor.style.left = `${event.clientX}px`;
+            catCursor.style.top = `${event.clientY}px`;
           },
           { passive: true }
         );
 
         document.querySelectorAll("a, button, .photo, canvas").forEach((target) => {
-          target.addEventListener("pointerenter", () => metalCursor.classList.add("active"));
-          target.addEventListener("pointerleave", () => metalCursor.classList.remove("active"));
+          target.addEventListener("pointerenter", () => catCursor.classList.add("active"));
+          target.addEventListener("pointerleave", () => catCursor.classList.remove("active"));
         });
       }
 
