@@ -27,6 +27,8 @@ const BLANK_PIXEL =
 const FRONT_UV_RECT = { x: 0, y: 0, w: 0.5, h: 0.755 };
 const BACK_UV_RECT = { x: 0.5, y: 0, w: 0.5, h: 0.757 };
 
+const isFiniteVector = value => Number.isFinite(value?.x) && Number.isFinite(value?.y) && Number.isFinite(value?.z);
+
 export default function Lanyard({
   position = [0, 0, 30],
   gravity = [0, -40, 0],
@@ -201,21 +203,27 @@ function Band({
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
       [card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp());
-      card.current?.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z });
+      const nextTranslation = { x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z };
+      if (isFiniteVector(nextTranslation)) card.current?.setNextKinematicTranslation(nextTranslation);
     }
     if (fixed.current) {
       [j1, j2].forEach(ref => {
-        if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
-        const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
+        const translation = ref.current.translation();
+        if (!isFiniteVector(translation)) return;
+        if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(translation);
+        const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(translation)));
         ref.current.lerped.lerp(
-          ref.current.translation(),
+          translation,
           delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
         );
       });
-      curve.points[0].copy(j3.current.translation());
+      const j3Translation = j3.current.translation();
+      const fixedTranslation = fixed.current.translation();
+      if (!isFiniteVector(j3Translation) || !isFiniteVector(j2.current.lerped) || !isFiniteVector(j1.current.lerped) || !isFiniteVector(fixedTranslation)) return;
+      curve.points[0].copy(j3Translation);
       curve.points[1].copy(j2.current.lerped);
       curve.points[2].copy(j1.current.lerped);
-      curve.points[3].copy(fixed.current.translation());
+      curve.points[3].copy(fixedTranslation);
       band.current.geometry.setPoints(curve.getPoints(isMobile ? 16 : 32));
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
