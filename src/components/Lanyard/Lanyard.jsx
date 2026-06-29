@@ -189,7 +189,6 @@ function Band({
       new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()])
   );
   const [dragged, drag] = useState(false);
-  const [hovered, hover] = useState(false);
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -198,13 +197,6 @@ function Band({
     [0, 0, 0],
     [0, 1.5, 0]
   ]);
-
-  useEffect(() => {
-    if (hovered) {
-      document.body.style.cursor = dragged ? 'grabbing' : 'grab';
-      return () => void (document.body.style.cursor = 'auto');
-    }
-  }, [hovered, dragged]);
 
   useFrame((state, delta) => {
     if (dragged) {
@@ -271,8 +263,6 @@ function Band({
           <group
             scale={2.25}
             position={[0, -1.2, -0.05]}
-            onPointerOver={() => hover(true)}
-            onPointerOut={() => hover(false)}
             onPointerUp={e => (e.target.releasePointerCapture(e.pointerId), drag(false))}
             onPointerDown={e => (
               e.target.setPointerCapture(e.pointerId),
