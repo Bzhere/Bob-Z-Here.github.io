@@ -411,6 +411,8 @@
       }
 
       .photo-grid {
+        position: relative;
+        z-index: 25;
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
         align-items: end;
@@ -447,6 +449,7 @@
       }
 
       .photo img {
+        pointer-events: none;
         object-fit: contain;
         object-position: center bottom;
       }
@@ -458,6 +461,7 @@
         opacity: 0;
         transition: opacity 500ms var(--ease);
         content: "";
+        pointer-events: none;
       }
 
       .photo:hover::after {
