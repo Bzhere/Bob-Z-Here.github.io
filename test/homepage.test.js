@@ -21,3 +21,8 @@ test("contact links render clean arrow glyphs instead of mojibake", () => {
 test("hero carousel images fill the display frame", () => {
   assert.match(html, /\.hero-frame img\s*\{[^}]*object-fit:\s*cover;/s);
 });
+
+test("hero carousel uses build-resolved image URLs", () => {
+  assert.match(html, /function resolveImageSource\(selector,\s*fallback\)/);
+  assert.equal(/image:\s*"assets\/(?:hero-denim|crimson-hero|western-hero)\.webp"/.test(html), false);
+});

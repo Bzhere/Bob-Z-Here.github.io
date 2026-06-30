@@ -1110,23 +1110,28 @@
       updateScrollState();
       window.addEventListener("scroll", updateScrollState, { passive: true });
 
+      function resolveImageSource(selector, fallback) {
+        const image = document.querySelector(selector);
+        return image ? image.currentSrc || image.src || fallback : fallback;
+      }
+
       const heroThemes = [
         {
           label: "Theme 01 / Denim",
           copy: "Cool denim, relaxed lines, quiet edge.",
-          image: "assets/hero-denim.webp",
+          image: resolveImageSource("[data-hero-image]", "assets/hero-denim.webp"),
           alt: "ZGY in a cool gray denim portrait"
         },
         {
           label: "Theme 02 / Crimson",
           copy: "A vivid red stage, tailored focus, controlled intensity.",
-          image: "assets/crimson-hero.webp",
+          image: resolveImageSource('[alt="Half-length black suit portrait of ZGY against red"]', "assets/crimson-hero.webp"),
           alt: "ZGY in a crimson studio portrait"
         },
         {
           label: "Theme 03 / Vintage",
           copy: "Warm light, western texture, story-rich elegance.",
-          image: "assets/western-hero.webp",
+          image: resolveImageSource('[alt="Seated western leather portrait of ZGY"]', "assets/western-hero.webp"),
           alt: "ZGY in a vintage western leather portrait"
         }
       ];
