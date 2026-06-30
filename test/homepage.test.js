@@ -17,3 +17,7 @@ test("contact links render clean arrow glyphs instead of mojibake", () => {
   assert.match(html, /backHomeLink\.addEventListener\("click"/);
   assert.match(html, /window\.location\.assign\(backHomeLink\.href\)/);
 });
+
+test("hero carousel images fill the display frame", () => {
+  assert.match(html, /\.hero-frame img\s*\{[^}]*object-fit:\s*cover;/s);
+});
