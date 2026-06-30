@@ -270,7 +270,7 @@ function Band({
             )}
           >
             <mesh name="mobile-card-hit-area">
-              <boxGeometry args={[2.4, 3.3, 0.16]} />
+              <boxGeometry args={[1.9, 2.7, 0.12]} />
               <meshBasicMaterial transparent opacity={0.01} depthWrite={false} />
             </mesh>
             <mesh geometry={nodes.card.geometry}>
