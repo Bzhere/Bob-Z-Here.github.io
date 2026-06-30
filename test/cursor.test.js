@@ -14,6 +14,13 @@ test("desktop custom cursor uses the cat artwork", async () => {
   assert.equal(html.includes("metal-cursor"), false);
 });
 
+test("cat cursor artwork is cut out and tilts strongly when active", async () => {
+  const png = await readFile(catCursorUrl);
+  assert.equal(png.toString("ascii", 1, 4), "PNG");
+  assert.equal(png.includes(Buffer.from("tRNS", "ascii")) || png.includes(Buffer.from("rgba", "ascii")) || png[25] === 6, true);
+  assert.match(html, /\.cat-cursor\.active\s*\{[^}]*rotate\(45deg\)/s);
+});
+
 test("lanyard does not restore the native cursor on desktop", () => {
   assert.equal(lanyardSource.includes("document.body.style.cursor"), false);
 });
