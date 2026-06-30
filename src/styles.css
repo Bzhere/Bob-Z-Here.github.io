@@ -73,7 +73,7 @@
 
   .reactbits-lanyard-shell,
   .reactbits-lanyard-shell canvas {
-    touch-action: pan-y;
+    touch-action: none;
   }
 
   .reactbits-lanyard-shell .lanyard-wrapper {
@@ -93,7 +93,7 @@
 
   .reactbits-lanyard-shell,
   .reactbits-lanyard-shell canvas {
-    touch-action: pan-y;
+    touch-action: none;
   }
 
   .reactbits-lanyard-shell .lanyard-wrapper {
