@@ -2,13 +2,18 @@
   position: fixed;
   top: 76px;
   right: -20px;
-  z-index: 45;
-  width: min(540px, 48vw);
-  height: 600px;
+  z-index: 20;
+  width: min(720px, 96vw);
+  height: 900px;
   pointer-events: none;
+  touch-action: none;
 }
 
 #reactbits-lanyard-root:has(.reactbits-lanyard-shell.is-hidden) {
+  pointer-events: none;
+}
+
+#reactbits-lanyard-root:has(.reactbits-lanyard-shell.is-hidden) .reactbits-lanyard-shell {
   pointer-events: none;
 }
 
@@ -48,6 +53,7 @@
 .reactbits-lanyard-shell canvas {
   width: 100% !important;
   height: 100% !important;
+  touch-action: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -59,26 +65,26 @@
 @media (max-width: 860px) {
   #reactbits-lanyard-root {
     top: 76px;
-    right: -48px;
-    width: 340px;
-    height: 420px;
+    right: -28px;
+    width: min(92vw, 560px);
+    height: 700px;
   }
 
   .reactbits-lanyard-shell .lanyard-wrapper {
-    transform: scale(0.82);
+    transform: scale(1);
     transform-origin: top right;
   }
 }
 
 @media (max-width: 560px) {
   #reactbits-lanyard-root {
-    top: 70px;
-    right: -64px;
-    width: 310px;
-    height: 390px;
+    top: 72px;
+    right: -24px;
+    width: min(92vw, 520px);
+    height: 650px;
   }
 
   .reactbits-lanyard-shell .lanyard-wrapper {
-    transform: scale(0.74);
+    transform: scale(1);
   }
 }
